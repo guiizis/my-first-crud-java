@@ -56,6 +56,16 @@ public class Main {
             System.out.println("User not found");
           }
           break;
+        case 4:
+          System.out.println("type user's index to delete");
+          int indexToRemove = scanner.nextInt();
+          if (indexToRemove >= 0 && indexToRemove <= users.size()) {
+              users.remove(indexToRemove);
+              System.out.println("user deleted");
+          } else {
+            System.out.println("user not found, try again");
+          }
+          break;
       }
     }
   }
