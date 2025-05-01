@@ -66,6 +66,12 @@ public class Main {
             System.out.println("user not found, try again");
           }
           break;
+        case 5:
+          running = false;
+          System.out.println("Closing ...");
+          break;
+        default:
+          System.out.println("choose another option");
       }
     }
   }
