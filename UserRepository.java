@@ -1,6 +1,3 @@
-package user;
-
-import java.awt.datatransfer.SystemFlavorMap;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;

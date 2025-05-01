@@ -1,0 +1,3 @@
+zelda,12
+tobata,12
+meg,10
