@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(User newUser) {
+    public User createUser(@RequestBody User newUser) {
         newUser.setId(idCounter.incrementAndGet());
         users.add(newUser);
         UserRepository.saveUsers(users);
