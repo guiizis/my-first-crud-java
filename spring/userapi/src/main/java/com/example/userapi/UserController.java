@@ -1,8 +1,8 @@
 package com.example.userapi;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,43 +16,30 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserController {
 
-    private List<User> users = UserRepository.getUsers();
-    private AtomicLong idCounter = new AtomicLong(getMaxId());
-
-    private long getMaxId() {
-        return users.stream().mapToLong(User::getId).max().orElse(0L);
-    }
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping
-    public List<User> listUsers() {
-        return users;
+    public List<UserTest> listUsers() {
+        return userRepository.findAll();
     }
 
     @PostMapping
-    public User createUser(@RequestBody User newUser) {
-        newUser.setId(idCounter.incrementAndGet());
-        users.add(newUser);
-        UserRepository.saveUsers(users);
-        return newUser;
+    public UserTest createUser(@RequestBody UserTest newUser) {
+        return userRepository.save(newUser);
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        for (User user : users) {
-            if (user.getId().equals(id)) {
-                user.setName(updatedUser.getName());
-                user.setAge(updatedUser.getAge());
-                UserRepository.saveUsers(users);
-                return updatedUser;
-            }
-        }
-        throw new RuntimeException("we not found a user with this ID");
+    public UserTest updateUser(@PathVariable Long id, @RequestBody UserTest updatedUser) {
+        return userRepository.findById(id).map(user -> {
+            user.setName(updatedUser.getName());
+            user.setAge(updatedUser.getAge());
+            return userRepository.save(user);
+        }).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
-        users.removeIf(user -> user.getId().equals(id));
-        UserRepository.saveUsers(users);
-        System.out.println("User deleted");
+        userRepository.deleteById(id);
     }
 }

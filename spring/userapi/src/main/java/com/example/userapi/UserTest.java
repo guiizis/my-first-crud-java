@@ -1,13 +1,20 @@
 package com.example.userapi;
 
-public class User {
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+@Entity
+public class UserTest {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private int age;
 
-    public User(Long id, String name, int age) {
-        this.id = id;
+    public UserTest(String name, int age) {
         this.name = name;
         this.age = age;
     }
