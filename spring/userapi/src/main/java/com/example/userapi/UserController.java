@@ -1,6 +1,7 @@
 package com.example.userapi;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.userapi.dto.UserResponseDTO;
+import com.example.userapi.mapper.UserMapper;
+
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -20,21 +26,27 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping
-    public List<UserTest> listUsers() {
-        return userRepository.findAll();
+    public List<UserResponseDTO> listUsers() {
+        return userRepository
+                .findAll()
+                .stream()
+                .map(UserMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     @PostMapping
-    public UserTest createUser(@RequestBody UserTest newUser) {
-        return userRepository.save(newUser);
+    public UserResponseDTO createUser(@RequestBody @Valid UserTest newUser) {
+        UserTest user = userRepository.save(newUser);
+        return UserMapper.toDTO(user);
     }
 
     @PutMapping("/{id}")
-    public UserTest updateUser(@PathVariable Long id, @RequestBody UserTest updatedUser) {
+    public UserResponseDTO updateUser(@PathVariable Long id, @RequestBody @Valid UserTest updatedUser) {
         return userRepository.findById(id).map(user -> {
             user.setName(updatedUser.getName());
             user.setAge(updatedUser.getAge());
-            return userRepository.save(user);
+            UserTest responseUser = userRepository.save(user);
+            return UserMapper.toDTO(responseUser);
         }).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
