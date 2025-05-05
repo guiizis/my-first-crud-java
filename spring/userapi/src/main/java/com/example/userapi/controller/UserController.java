@@ -1,4 +1,4 @@
-package com.example.userapi;
+package com.example.userapi.controller;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.userapi.dto.UserResponseDTO;
 import com.example.userapi.mapper.UserMapper;
+import com.example.userapi.model.UserTest;
+import com.example.userapi.repository.UserRepository;
 
 import jakarta.validation.Valid;
 

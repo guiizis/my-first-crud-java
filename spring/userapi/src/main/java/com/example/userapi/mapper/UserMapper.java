@@ -1,8 +1,8 @@
 package com.example.userapi.mapper;
 
-import com.example.userapi.UserTest;
 import com.example.userapi.dto.UserRequestDTO;
 import com.example.userapi.dto.UserResponseDTO;
+import com.example.userapi.model.UserTest;
 
 public class UserMapper {
 
