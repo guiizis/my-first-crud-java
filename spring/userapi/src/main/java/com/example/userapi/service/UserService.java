@@ -9,4 +9,5 @@ public interface UserService {
   UserResponseDTO create(UserRequestDTO dto);
   List<UserResponseDTO> getAll();
   UserResponseDTO update(Long id, UserRequestDTO dto);
+  void delete(Long id);
 }

@@ -1,9 +1,7 @@
 package com.example.userapi.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.userapi.dto.UserRequestDTO;
 import com.example.userapi.dto.UserResponseDTO;
-import com.example.userapi.mapper.UserMapper;
-import com.example.userapi.model.UserTest;
-import com.example.userapi.repository.UserRepository;
+import com.example.userapi.service.UserServiceImpl;
 
 import jakarta.validation.Valid;
 
@@ -24,36 +21,29 @@ import jakarta.validation.Valid;
 @RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserServiceImpl userService;
+
+    public UserController(UserServiceImpl userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public List<UserResponseDTO> listUsers() {
-        return userRepository
-                .findAll()
-                .stream()
-                .map(UserMapper::toDTO)
-                .collect(Collectors.toList());
+        return userService.getAll();
     }
 
     @PostMapping
-    public UserResponseDTO createUser(@RequestBody @Valid UserTest newUser) {
-        UserTest user = userRepository.save(newUser);
-        return UserMapper.toDTO(user);
+    public UserResponseDTO createUser(@RequestBody @Valid UserRequestDTO newUser) {
+        return userService.create(newUser);
     }
 
     @PutMapping("/{id}")
-    public UserResponseDTO updateUser(@PathVariable Long id, @RequestBody @Valid UserTest updatedUser) {
-        return userRepository.findById(id).map(user -> {
-            user.setName(updatedUser.getName());
-            user.setAge(updatedUser.getAge());
-            UserTest responseUser = userRepository.save(user);
-            return UserMapper.toDTO(responseUser);
-        }).orElseThrow(() -> new RuntimeException("User not found"));
+    public UserResponseDTO updateUser(@PathVariable Long id, @RequestBody @Valid UserRequestDTO updatedUser) {
+        return userService.update(id, updatedUser);
     }
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
-        userRepository.deleteById(id);
+        userService.delete(id);
     }
 }
