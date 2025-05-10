@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.userapi.dto.UserRequestDTO;
 import com.example.userapi.dto.UserResponseDTO;
+import com.example.userapi.exceptions.UserNotFoundException;
 import com.example.userapi.mapper.UserMapper;
 import com.example.userapi.model.UserTest;
 import com.example.userapi.repository.UserRepository;
@@ -40,7 +41,7 @@ public class UserServiceImpl implements UserService {
     public UserResponseDTO update(Long id, UserRequestDTO dto) {
         Optional<UserTest> optional = userRepository.findById(id);
         if (optional.isEmpty()) {
-            throw new RuntimeException("User with this id: " + id + " not found");
+            throw new UserNotFoundException("User with this id: " + id + " not found");
         }
 
         UserTest user = optional.get();
@@ -55,7 +56,7 @@ public class UserServiceImpl implements UserService {
     public void delete(Long id) {
         Optional<UserTest> optional = userRepository.findById(id);
         if (optional.isEmpty()) {
-            throw new RuntimeException("User with this id: " + id + " not found");
+            throw new UserNotFoundException("User with this id: " + id + " not found");
         }
         userRepository.deleteById(id);
     }
