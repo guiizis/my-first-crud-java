@@ -1,5 +1,9 @@
 package com.example.userapi.model;
 
+import jakarta.persistence.*;
+import lombok.*;
+
+
 @Entity
 @Table(name = "app_users")
 @Data
