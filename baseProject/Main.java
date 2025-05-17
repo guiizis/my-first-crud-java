@@ -7,7 +7,7 @@ import model.user.User;
 public class Main {
 
     public static void main(String[] args) {
-        List<User> users = UserRepository.loadUsers();
+        List<User> users = UserTestRepository.loadUsers();
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
 
@@ -30,7 +30,7 @@ public class Main {
                     System.out.print("type a user's age: ");
                     int age = scanner.nextInt();
                     users.add(new User(name, String.valueOf(age)));
-                    UserRepository.saveUsers(users);
+                    UserTestRepository.saveUsers(users);
                     System.out.println("User add with success");
                 }
                 case 2 -> {
@@ -52,7 +52,7 @@ public class Main {
                         User userToUpdate = users.get(indexToUpdate);
                         userToUpdate.setName(newName);
                         userToUpdate.setAge(String.valueOf(newAge));
-												UserRepository.saveUsers(users);
+												UserTestRepository.saveUsers(users);
                         System.out.println("User updated");
                     } else {
                         System.out.println("User not found");
@@ -63,7 +63,7 @@ public class Main {
                     int indexToRemove = scanner.nextInt();
                     if (indexToRemove >= 0 && indexToRemove <= users.size()) {
                         users.remove(indexToRemove);
-												UserRepository.saveUsers(users);
+												UserTestRepository.saveUsers(users);
                         System.out.println("user deleted");
                     } else {
                         System.out.println("user not found, try again");

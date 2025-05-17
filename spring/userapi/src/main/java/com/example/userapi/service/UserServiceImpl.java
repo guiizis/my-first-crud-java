@@ -11,26 +11,26 @@ import com.example.userapi.dto.UserResponseDTO;
 import com.example.userapi.exceptions.UserNotFoundException;
 import com.example.userapi.mapper.UserMapper;
 import com.example.userapi.model.UserTest;
-import com.example.userapi.repository.UserRepository;
+import com.example.userapi.repository.UserTestRepository;
 
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    private final UserTestRepository UserTestRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserServiceImpl(UserTestRepository UserTestRepository) {
+        this.UserTestRepository = UserTestRepository;
     }
 
     @Override
     public UserResponseDTO create(UserRequestDTO dto) {
-        UserTest user = userRepository.save(UserMapper.entity(dto));
+        UserTest user = UserTestRepository.save(UserMapper.entity(dto));
         return UserMapper.toDTO(user);
     }
 
     @Override
     public List<UserResponseDTO> getAll() {
-        return userRepository
+        return UserTestRepository
                 .findAll()
                 .stream()
                 .map(UserMapper::toDTO)
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO update(Long id, UserRequestDTO dto) {
-        Optional<UserTest> optional = userRepository.findById(id);
+        Optional<UserTest> optional = UserTestRepository.findById(id);
         if (optional.isEmpty()) {
             throw new UserNotFoundException("User with this id: " + id + " not found");
         }
@@ -48,16 +48,16 @@ public class UserServiceImpl implements UserService {
         user.setName(dto.getName());
         user.setAge(dto.getAge());
 
-        UserTest updated = userRepository.save(user);
+        UserTest updated = UserTestRepository.save(user);
         return UserMapper.toDTO(updated);
     }
 
     @Override
     public void delete(Long id) {
-        Optional<UserTest> optional = userRepository.findById(id);
+        Optional<UserTest> optional = UserTestRepository.findById(id);
         if (optional.isEmpty()) {
             throw new UserNotFoundException("User with this id: " + id + " not found");
         }
-        userRepository.deleteById(id);
+        UserTestRepository.deleteById(id);
     }
 }

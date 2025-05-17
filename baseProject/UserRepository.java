@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.user.User;
 
-public class UserRepository {
+public class UserTestRepository {
 
     private static final String FILE_NAME = "users.txt";
 
