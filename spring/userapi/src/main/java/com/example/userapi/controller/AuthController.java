@@ -1,23 +1,47 @@
 package com.example.userapi.controller;
 
+import java.util.Optional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.userapi.config.JwtUtil;
-import com.example.userapi.repository.UserRepository;
+import com.example.userapi.dto.AuthUserLoginRequest;
+import com.example.userapi.repository.AuthUserRepository;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.example.userapi.model.AuthUser;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final UserRepository userRepository;
+    private final AuthUserRepository authUserRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
-        this.userRepository = userRepository;
+    public AuthController(AuthUserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+        this.authUserRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody AuthUserLoginRequest loginRequest) {
+        Optional<AuthUser> userOpt = authUserRepository.findByUsername(loginRequest.getUsername());
+
+        if(userOpt.isEmpty()) {
+            return ResponseEntity.status(401).body("user not found");
+        }
+
+        AuthUser user = userOpt.get();
+
+        if(!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+
+        }
     }
 }
