@@ -1,4 +1,4 @@
-package com.example.userapi.DTO;
+package com.example.userapi.dto;
 
 public class AuthUserLoginRequest {
 
@@ -6,18 +6,18 @@ public class AuthUserLoginRequest {
     private String password;
 
   public String getUsername() {
-    return this.username;
+    return username;
   }
 
   public void setUsername(String newUserName) {
-    this.username = newUserName;
+    username = newUserName;
   }
   
   public String getPassword() {
-    return this.password;
+    return password;
   }
 
   public void setPassword(String newPassword) {
-    this.password = newPassword;
+    password = newPassword;
   }
 }
