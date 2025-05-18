@@ -1,4 +1,4 @@
-package com.example.userapi.dto;
+package com.example.userapi.DTO;
 
 public class AuthUserLoginRequest {
 

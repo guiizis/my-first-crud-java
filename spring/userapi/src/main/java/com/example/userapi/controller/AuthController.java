@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.userapi.config.JwtUtil;
-import com.example.userapi.dto.AuthUserLoginRequest;
+import com.example.userapi.DTO.AuthUserLoginRequest;
 import com.example.userapi.repository.AuthUserRepository;
 
 import org.springframework.http.ResponseEntity;
@@ -28,6 +28,9 @@ public class AuthController {
         this.authUserRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+
+
+        System.out.println("teste");
     }
 
     @PostMapping("/login")
@@ -41,7 +44,10 @@ public class AuthController {
         AuthUser user = userOpt.get();
 
         if(!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-
+            return ResponseEntity.status(403).body("invalid password");
         }
+
+        String token = jwtUtil.generateToken(user.getPassword());
+        return ResponseEntity.ok().body(token);
     }
 }
